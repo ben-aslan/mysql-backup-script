@@ -158,7 +158,7 @@ trim() {
 }
 
 IP=$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')
-caption="${caption}\n\n${ben_aslan}\n<code>${IP}</code>\nCreated by @ben-aslan - https://github.com/ben-aslan/mysql-backup"
+caption="${caption}\n\n${ben_aslan}\n<code>${IP}</code>\nCreated by @ben-aslan - https://github.com/ben-aslan/mysql-backup-script"
 comment=$(echo -e "$caption" | sed 's/<code>//g;s/<\/code>//g')
 comment=$(trim "$comment")
 
