@@ -112,6 +112,7 @@ sudo crontab -l | grep -vE '/opt/mysql-backup/ac-backup.+\.sh' | crontab -
 fi
 
 mkdir /opt/mysql-backup
+mkdir /opt/mysql-backup/db-backup
 
 # create mysql-backup.sh
     cat > "/opt/mysql-backup/mysql-backup.sh" <<EOL
@@ -138,7 +139,7 @@ chmod +x /opt/mysql-backup/mysql-backup.sh
 
 ZIP=$(cat <<EOF
 bash -c "/opt/mysql-backup/mysql-backup.sh"
-zip -r /opt/mysql-backup/ac-backup-m.zip /opt/mysql-backup/db-backup/*
+zip -r /opt/mysql-backup/mysql-backup.zip /opt/mysql-backup/db-backup/*
 rm -rf /opt/mysql-backup/db-backup/*
 EOF
 )
@@ -165,7 +166,7 @@ comment=$(trim "$comment")
 sudo apt install zip -y
 
 # send backup to telegram
-cat > "/opt/mysql-backup/mysql-backup.sh" <<EOL
+cat > "/opt/mysql-backup/mysql-backup-sender.sh" <<EOL
 rm -rf /opt/mysql-backup/mysql-backup.zip
 $ZIP
 echo -e "$comment" | zip -z /opt/mysql-backup/mysql-backup.zip
@@ -174,10 +175,10 @@ EOL
 
 
 # Add cronjob
-{ crontab -l -u root; echo "${cron_time} /bin/bash /opt/mysql-backup/mysql-backup.sh >/dev/null 2>&1"; } | crontab -u root -
+{ crontab -l -u root; echo "${cron_time} /bin/bash /opt/mysql-backup/mysql-backup-sender.sh >/dev/null 2>&1"; } | crontab -u root -
 
 # run the script
-bash "/opt/mysql-backup/mysql-backup.sh"
+bash "/opt/mysql-backup/mysql-backup-sender.sh"
 
 # Done
 echo -e "\nDone\n"
