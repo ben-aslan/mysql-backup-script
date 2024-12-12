@@ -108,7 +108,7 @@ done
 
 if [[ "$crontabs" == "y" ]]; then
 # remove cronjobs
-sudo crontab -l | grep -vE '/opt/mysql-backup/ac-backup.+\.sh' | crontab -
+sudo crontab -l | grep -vE '/opt/mysql-backup/mysql-backup.+\.sh' | crontab -
 fi
 
 mkdir /opt/mysql-backup
